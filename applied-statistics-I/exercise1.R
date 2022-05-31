@@ -4,6 +4,7 @@ library(BSDA)
 library(stats)
 library(ggpubr)
 library(RcmdrMisc)
+library (fdth)
 
 load("./realestateiaa.RData")
 
@@ -38,14 +39,11 @@ Boxplot( ~ tarea, data=realestateiaa, id=list(method="y"))
 # Elaborar a tabela de distribuição de frequências da variável “price”
 # (preço dos imóveis);
 
-tabPrice = table(price)
-tabPrice
-totalPrice = sum(tabPrice)
-totalPrice
-freq = tabPrice/totalPrice
-freq
-table(freq, tabPrice)
-df <- data.frame(freq)
+table <- fdt (price)
+
+print (table)
+
+df <- data.frame(table)
 
 write.csv(df,"./table-frequency-distribution.csv", row.names = FALSE)
 
