@@ -1,4 +1,4 @@
-# Regressao
+# Satellite
 
 install.packages("mlbench")
 install.packages("e1071")
@@ -8,10 +8,9 @@ install.packages("caret")
 install.packages("RSNNS")
 
 library("mlbench")
-library("caret")
-library("RSNNS")
 library("randomForest")
 library("RSNNS")
+library("caret")
 
 # ??mlbench # help 
 
@@ -22,12 +21,12 @@ set.seed(7)
 
 # Separar 80% em treino e 20% em teste
 
-indices <- createDataPartition(df$classes, p=0.80, list=FALSE)
+indices <- createDataPartition(df$classes, p=0.8, list=FALSE)
 treino <- df[indices,]
 teste <- df[-indices,]
 
 # Random Forest
-#??train
+
 rf <- train(classes~., data=treino, method="rf")
 predicoes.rf <- predict(rf, teste)
 confusionMatrix(predicoes.rf, teste$classes) 
@@ -40,10 +39,21 @@ confusionMatrix(predicoes.svm, teste$classes)
 
 # RNA
 
-rna <- train(classes~., data=treino, method="nnet")
+rna <- train(classes~., data=treino, method="nnet", trace=FALSE)
 predicoes.rna <- predict(rna, teste)
 confusionMatrix(predicoes.rna, teste$classes) 
 
-save(rf, file="rf.RData") # salvar pra uso futuro
-save(svm, file="svm.RData")
-load("rf.RData")
+# Em análise a acucária o modelo escolhido foi: RandomForest
+
+# FINAL
+
+indices <- createDataPartition(df$classes, p=1, list=FALSE)
+dados <- df[indices,]
+
+rf <- train(classes~., data=dados, method="rf")
+final.rf <- predict(rf, dados)
+confusionMatrix(final.rf, dados$classes)
+saveRDS(rf, "final.rf.rds")
+
+
+#load("final.rf.rds")
