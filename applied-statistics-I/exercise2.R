@@ -1,0 +1,210 @@
+# Lista de Exercicios 2 
+
+load("./imoveiscwbav.RData")
+gc()
+
+# Modelo Preliminar
+
+resultados <- lm(price~age+parea+tarea+bath+ensuit+garag+plaz+park+
+                   trans+kidca+school+health+bike+barb+balc+elev+
+                   fitg+party+categ,data=imoveiscwbav)
+
+
+summary (resultados)
+
+# Especificação do Modelo
+
+#install.packages("PanJen")
+
+library("PanJen")
+
+formBase<-formula(price~parea+tarea+bath+ensuit+garag+plaz+park+
+                 trans+kidca+school+health+bike+barb+balc+elev+
+                 fitg+party+categ)
+
+summary(lm(formBase, data=imoveiscwbav))
+
+PanJenage<-fform(imoveiscwbav,"age",formBase)
+# smoothing vencedor, incluir age
+
+formBase<-formula(price~age+tarea+bath+ensuit+garag+plaz+park+
+                    trans+kidca+school+health+bike+barb+balc+elev+
+                    fitg+party+categ)
+
+summary(lm(formBase, data=imoveiscwbav))
+
+PanJenparea<-fform(imoveiscwbav,"parea",formBase)
+# smoothing vencedor, incluir parea
+
+#install.packages("timetk")
+#install.packages("hardhat")
+library(timetk)
+
+formBase<-formula(price~age+parea+bath+ensuit+garag+plaz+park+
+                    trans+kidca+school+health+bike+barb+balc+elev+
+                    fitg+party+categ)
+
+summary(lm(formBase, data=imoveiscwbav))
+
+PanJentarea<-fform(imoveiscwbav,"tarea",formBase)
+# smoothing vecedor, incluir tarea
+
+
+formBase<-formula(price~age+parea+tarea+bath+ensuit+garag+park+
+                    trans+kidca+school+health+bike+barb+balc+elev+
+                    fitg+party+categ)
+
+summary(lm(formBase, data=imoveiscwbav))
+
+PanJenplaz<-fform(imoveiscwbav,"plaz",formBase)
+# base vencedor, não incluir plaz
+
+formBase<-formula(price~age+parea+tarea+bath+ensuit+garag+plaz+
+                    trans+kidca+school+health+bike+barb+balc+elev+
+                    fitg+party+categ)
+
+summary(lm(formBase, data=imoveiscwbav))
+
+PanJenpark<-fform(imoveiscwbav,"park",formBase)
+# smoothing vencedor, incluir park
+
+formBase<-formula(price~age+parea+tarea+bath+ensuit+garag+plaz+park+
+                    kidca+school+health+bike+barb+balc+elev+
+                    fitg+party+categ)
+
+summary(lm(formBase, data=imoveiscwbav))
+
+PanJentrans<-fform(imoveiscwbav,"trans",formBase)
+# base vencedor, não incluir trans
+
+formBase<-formula(price~age+parea+tarea+bath+ensuit+garag+plaz+park+
+                    trans+school+health+bike+barb+balc+elev+
+                    fitg+party+categ)
+
+summary(lm(formBase, data=imoveiscwbav))
+
+PanJenkidca<-fform(imoveiscwbav,"kidca",formBase)
+# base vencedor, não incluir kidca
+
+formBase<-formula(price~age+parea+tarea+bath+ensuit+garag+plaz+park+
+                    trans+kidca+health+bike+barb+balc+elev+
+                    fitg+party+categ)
+
+summary(lm(formBase, data=imoveiscwbav))
+
+PanJenschool<-fform(imoveiscwbav,"school",formBase)
+# base vencedor, não incluir school
+
+formBase<-formula(price~age+parea+tarea+bath+ensuit+garag+plaz+park+
+                    trans+kidca+school+bike+barb+balc+elev+
+                    fitg+party+categ)
+
+summary(lm(formBase, data=imoveiscwbav))
+
+PanJenhealth<-fform(imoveiscwbav,"health",formBase)
+# base vencedor, não incluir health
+
+formBase<-formula(price~age+parea+tarea+bath+ensuit+garag+plaz+park+
+                    trans+kidca+school+health+barb+balc+elev+
+                    fitg+party+categ)
+
+summary(lm(formBase, data=imoveiscwbav))
+
+PanJenbike<-fform(imoveiscwbav,"bike",formBase)
+# base vencedor, não incluir bike
+
+# smoothing, se necessario:
+
+imoveiscwbav$age <- smooth_vec(imoveiscwbav$age)
+imoveiscwbav$parea <- smooth_vec(imoveiscwbav$parea)
+imoveiscwbav$tarea <- smooth_vec(imoveiscwbav$tarea)
+imoveiscwbav$park <- smooth_vec(imoveiscwbav$park)
+
+
+save(imoveiscwbav, file="imoveiscwbav1.RData" )
+
+# Valores Padrão
+
+resultados <- lm(price~age+parea+tarea+bath+ensuit+garag+plaz+park+
+                   trans+kidca+school+health+bike+barb+balc+elev+
+                   fitg+party+categ,data=imoveiscwbav)
+
+
+summary (resultados)
+
+
+# Outliers
+
+library (carData)
+library(car)
+
+outlierTest(resultados)
+
+# Teste Reset
+
+#install.packages("zoo")
+
+library (zoo)
+library (lmtest)
+
+resettest(price~age+parea+tarea+bath+ensuit+garag+plaz+park+
+            trans+kidca+school+health+bike+barb+balc+elev+
+            fitg+party+categ,power=2:3,type="regressor", data=imoveiscwbav)
+
+#resettest(hrwage~husage+husearns+huseduc+husblck+hushisp+
+#            hushrs+kidge6+age+black+educ+hispanic+union+
+#            kidlt6+earns,power=2:3, type="regressor", data=wage)
+
+
+# H0 = o modelo está corretamente especificado; 
+# HA = o modelo está incorretamente especificado;
+
+#Resultado do teste
+
+#RESET test
+#data:  hrwage ~ husage + husearns + huseduc + husblck + hushisp + hushrs +     kidge6 + age + black + educ + hispanic + union + kidlt6 +     earns
+#RESET = 1.217, df1 = 28, df2 = 1751, p-value = 0.2009
+
+# 	RESET test
+
+#data:  price ~ age + parea + tarea + bath + ensuit + garag + plaz +     park + trans + kidca + school + health + bike + barb + balc +     elev + fitg + party + categ
+#RESET = 2.0465, df1 = 38, df2 = 483, p-value = 0.0003444
+
+# F tabelado:
+
+qf(0.95, df1=38, df2=483)
+
+# F tabelado:
+
+# qf(0.95, df1=28, df2=1751)
+
+# Como o F calculado (1.217) é menor que o F tabelado (1,482789), 
+# não existe erro de especificação do modelo
+
+#Se houver erro de especiificação do modelo Ver rotina PANJEN (acima)
+# Se rodarmos novamente a regressão preliminar ajustada com o novo
+# modelo temos:
+
+imoveiscwbav$lnprice <- with(imoveiscwbav, log(price))
+imoveiscwbav$lnage <- with(imoveiscwbav, log(age))
+imoveiscwbav$lnparea <- with(imoveiscwbav, log(parea))
+imoveiscwbav$lntarea <- with(imoveiscwbav, log(tarea))
+imoveiscwbav$lnbath <- with(imoveiscwbav, log(bath))
+imoveiscwbav$lnensuit <- with(imoveiscwbav, log(ensuit))
+imoveiscwbav$lngarag <- with(imoveiscwbav, log(garag))
+imoveiscwbav$lnplaz <- with(imoveiscwbav, log(plaz))
+imoveiscwbav$lnpark <- with(imoveiscwbav, log(park))
+imoveiscwbav$lntrans <- with(imoveiscwbav, log(trans))
+imoveiscwbav$lnkidca <- with(imoveiscwbav, log(kidca))
+imoveiscwbav$lnschool <- with(imoveiscwbav, log(school))
+imoveiscwbav$lnhealth <- with(imoveiscwbav, log(health))
+imoveiscwbav$lnbike <- with(imoveiscwbav, log(bike))
+
+resettest(lnprice~lnage+lnparea+lntarea+bath+ensuit+garag+lnplaz+lnpark+
+            lntrans+lnkidca+lnschool+lnhealth+lnbike+barb+balc+elev+
+            fitg+party+categ,power=2:3,type="regressor", data=imoveiscwbav)
+
+
+qf(0.95, df1=38, df2=483)
+
+
