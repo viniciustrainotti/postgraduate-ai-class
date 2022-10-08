@@ -17,6 +17,8 @@ library("mice")
 install.packages("Metrics")
 library("Metrics")
 
+set.seed(0758662190)
+
 dados_tmp <- read.csv("Material 02 - 4 - R - Biomassa - Dados.csv")
 imp <- mice(dados_tmp) 
 dados <- complete(imp, 1)
