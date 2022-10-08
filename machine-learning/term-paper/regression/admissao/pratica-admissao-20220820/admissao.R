@@ -249,8 +249,8 @@ predicoes.svm <- predict(svm, teste)
 dados_novos_casos <- read.csv("Material 06 - 8 – R - Admissao - Novos Casos.csv")
 View(dados_novos_casos)
 
-dados_tmp$num <- NULL
-dados_tmp$ChanceOfAdmit <- NULL
+dados_novos_casos$num <- NULL
+dados_novos_casos$ChanceOfAdmit <- NULL
 predicoes.svm <- predict(svm, dados_novos_casos)
 resultado <- cbind(dados_novos_casos, predicoes.svm)
 View(resultado)
