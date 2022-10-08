@@ -102,7 +102,7 @@ MAE(teste$biomassa, predicoes.rf)
 set.seed(0758662190)
 rna <- train(biomassa ~ ., data=treino, method="nnet", trace=FALSE)
 rna
-predict.rna <- predict(rna, teste)
+predicoes.rna <- predict(rna, teste)
 
 rmse(teste$biomassa, predicoes.rna)
 
@@ -121,7 +121,7 @@ ctrl <- trainControl(method = "cv", number = 10)
 set.seed(0758662190)
 rna <- train(biomassa ~ ., data=treino, method="nnet", trace=FALSE, trControl=ctrl)
 rna
-predict.rna <- predict(rna, teste)
+predicoes.rna <- predict(rna, teste)
 
 rmse(teste$biomassa, predicoes.rna)
 
@@ -141,7 +141,7 @@ grid <- expand.grid(size = seq(from = 1, to = 45, by = 10), decay = seq(from = 0
 set.seed(0758662190)
 rna <- train(form= biomassa~., data=treino, method="nnet", tuneGrid=grid, trControl=ctrl, maxit=2000, trace=FALSE)
 rna
-predict.rna <- predict(rna, teste)
+predicoes.rna <- predict(rna, teste)
 
 rmse(teste$biomassa, predicoes.rna)
 
