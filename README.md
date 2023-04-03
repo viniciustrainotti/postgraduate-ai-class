@@ -1,3 +1,3 @@
-# Learning R Sutio - AI Class
+# IAA - Inteligência Artificial Aplicada
 
-loading ... 
+Setor de Educação Profissional e Tecnológia - UFPR
