@@ -43,7 +43,7 @@ breast_cancer.df$year[breast_cancer.df$year == 2020] = "2020"
 breast_cancer.df$year[breast_cancer.df$year == 2040] = "2040"
 
 breast_cancer.df
-
+save(dataset.df, file = "dataset.RData")
 
 #ggplot(breast_cancer.df, aes(fill=breast_cancer.df$year, y=breast_cancer.df$n_cases, x=breast_cancer.df$pop)) + 
 #  geom_bar(position="dodge", stat="identity")
